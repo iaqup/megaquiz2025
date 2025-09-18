@@ -29,7 +29,7 @@ $conn = new mysqli("localhost","root","","quizy");
                 if ($result->num_rows > 0){
                     $result = $result->fetch_assoc();
                     var_dump($result);
-                    if ($result['potwierdzony'] == 0){
+                    if ($result['potwierdzony'] == '1'){
                         $_SESSION['user'] = $result['nazwa'];
                         $_SESSION['email'] = $result['email'];
                         $_SESSION['admin'] = $result['admin'];
@@ -50,4 +50,5 @@ $conn = new mysqli("localhost","root","","quizy");
         ?>
     
 </body>
+
 </html>
