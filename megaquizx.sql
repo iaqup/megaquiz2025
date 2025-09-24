@@ -65,8 +65,8 @@ CREATE TABLE `uzytkownicy` (
 --
 
 INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `potwierdzony`) VALUES
-(1, 'nazwauz', 'mail@mail.com', 'haslo123', 0),
-(2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka', 0),
+(1, 'nazwauz', 'mail@mail.com', 'haslo123', 1),
+(2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka123', 0),
 (8, 'japko', 'jifijifiliski@gmail.com', '', 0),
 (9, 'a', 'a@wp.pl', '', 0);
 
@@ -106,3 +106,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
