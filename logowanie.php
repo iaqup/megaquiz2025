@@ -33,6 +33,7 @@ $conn = new mysqli("localhost","root","","quizy");
                         $_SESSION['user'] = $result['nazwa'];
                         $_SESSION['email'] = $result['email'];
                         $_SESSION['admin'] = $result['admin'];
+                        $_SESSION['id'] = $result['id'];
                         header("Location: index.php");
                     }
                     else{
@@ -41,9 +42,8 @@ $conn = new mysqli("localhost","root","","quizy");
 
                 }
                 else{
-                    // coś co poinformuje że błędne dane
+                    echo '<div style="color:red; margin-top:10px;">Błędny login lub hasło. Spróbuj ponownie.</div>';
                 }
-                
                 $conn->close();
         }
         }
