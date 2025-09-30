@@ -1,3 +1,26 @@
+<?php
+session_start();
+$conn = new mysqli("localhost","root","","quizy");
+if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
+$sort_options = [
+    'date' => '`data_dodania` DESC',
+    'questions' => '`ilosc_pytan` DESC',
+    'category' => '`kategoria_id` ASC',
+    'rating' => '`ocena_uz` DESC',
+    'premium' => '`premium` DESC'
+];
+
+$sort = isset($_GET['sort']) && isset($sort_options[$_GET['sort']]) ? $_GET['sort'] : 'date';
+$order_by = $sort_options[$sort];
+
+$result = $conn->query("
+    SELECT q.*, k.nazwa AS kategoria, u.nazwa AS autor
+    FROM quizy q
+    JOIN kategoria k ON q.kategoria_id = k.id
+    JOIN uzytkownicy u ON q.id_autor = u.id WHERE q.id_autor = '".$_SESSION['id']."'
+    ORDER BY $order_by
+");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,16 +30,21 @@
 </head>
 <body>
     <h1>Twoje quizy:</h1>
+    <form method="get" style="margin-bottom:10px;">
+    <label for="sort">Sortuj według:</label>
+    <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="date" <?=($sort=='date'? 'selected':'')?>>Data dodania</option>
+        <option value="questions" <?=($sort=='questions'? 'selected':'')?>>Ilość pytań</option>
+        <option value="category" <?=($sort=='category'? 'selected':'')?>>Kategoria</option>
+        <option value="rating" <?=($sort=='rating'? 'selected':'')?>>Ocena</option>
+        <option value="premium" <?=($sort=='premium'? 'selected':'')?>>Premium</option>
+    </select>
+</form>
     <table>
     <tr>
         <th>Nazwa</th><th>Ilosc pytan</th><th>Data dodania</th><th>Ocena</th><th>Kategoria</th><th>Premium</th>
     </tr>
         <?php
-        session_start();
-        $conn = new mysqli("localhost","root","","quizy");
-        $user_id = $_SESSION['id'];
-        $result = $conn->query("SELECT * FROM `quizy` WHERE `id_autor` = '$user_id'");
-        
         while ($row = $result->fetch_assoc()){
             $kategoria = $conn->query("SELECT nazwa FROM `kategoria` where id = ".$row['kategoria_id']);
             echo '<tr>';
