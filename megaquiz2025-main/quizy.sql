@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2025 at 12:02 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Wrz 30, 2025 at 03:10 PM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategoria`
+-- Struktura tabeli dla tabeli `kategoria`
 --
 
 CREATE TABLE `kategoria` (
@@ -51,7 +51,7 @@ INSERT INTO `kategoria` (`id`, `nazwa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quizy`
+-- Struktura tabeli dla tabeli `quizy`
 --
 
 CREATE TABLE `quizy` (
@@ -72,12 +72,15 @@ CREATE TABLE `quizy` (
 
 INSERT INTO `quizy` (`id`, `id_autor`, `data_dodania`, `nazwa`, `ilosc_pytan`, `kategoria_id`, `ocena_uz`, `ilosc_ocen`, `premium`) VALUES
 (1, 1, '2025-09-18 00:00:00', 'name', 0, 3, 0.9, 10, 0),
-(2, 10, '2025-09-26 23:18:23', 'nwm', 15, 2, 2.0, 2, 1);
+(7, 10, '2025-09-30 14:44:43', 'dsfsdfsfsdfdsfdsdfs', 0, 1, 0.0, 0, 0),
+(5, 10, '2025-09-30 14:18:50', 'niepremium', 0, 1, 0.0, 0, 0),
+(6, 10, '2025-09-30 14:22:09', 'premium', 0, 1, 0.0, 0, 1),
+(8, 10, '2025-09-30 15:09:35', 'premium', 67, 1, 0.0, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `uzytkownicy`
+-- Struktura tabeli dla tabeli `uzytkownicy`
 --
 
 CREATE TABLE `uzytkownicy` (
@@ -85,24 +88,26 @@ CREATE TABLE `uzytkownicy` (
   `nazwa` varchar(16) NOT NULL,
   `email` varchar(60) NOT NULL,
   `haslo` varchar(10) NOT NULL,
-  `potwierdzony` tinyint(1) NOT NULL
+  `premium` tinyint(1) NOT NULL,
+  `potwierdzony` tinyint(1) NOT NULL,
+  `admin` tinyint(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `uzytkownicy`
 --
 
-INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `potwierdzony`) VALUES
-(1, 'nazwauz', 'mail@mail.com', 'haslo123', 0),
-(2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka123', 1),
-(8, 'japko', 'jifijifiliski@gmail.com', '', 0),
-(9, 'a', 'a@wp.pl', '', 0),
-(10, 'userna', 'mailm@mail.com', 'password', 1);
+INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `premium`, `potwierdzony`, `admin`) VALUES
+(1, 'nazwauz', 'mail@mail.com', 'haslo123', 0, 0, 0),
+(2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka123', 0, 1, 0),
+(8, 'japko', 'jifijifiliski@gmail.com', '', 0, 0, 0),
+(9, 'a', 'a@wp.pl', '', 0, 0, 0),
+(10, 'userna', 'mailm@mail.com', 'password', 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `znajomi`
+-- Struktura tabeli dla tabeli `znajomi`
 --
 
 CREATE TABLE `znajomi` (
@@ -119,23 +124,23 @@ INSERT INTO `znajomi` (`id_nadawcy`, `id_odbiorcy`, `przyjeto`) VALUES
 (2, 1, 0);
 
 --
--- Indexes for dumped tables
+-- Indeksy dla zrzutów tabel
 --
 
 --
--- Indexes for table `kategoria`
+-- Indeksy dla tabeli `kategoria`
 --
 ALTER TABLE `kategoria`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `quizy`
+-- Indeksy dla tabeli `quizy`
 --
 ALTER TABLE `quizy`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `uzytkownicy`
+-- Indeksy dla tabeli `uzytkownicy`
 --
 ALTER TABLE `uzytkownicy`
   ADD PRIMARY KEY (`id`);
@@ -154,7 +159,7 @@ ALTER TABLE `kategoria`
 -- AUTO_INCREMENT for table `quizy`
 --
 ALTER TABLE `quizy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `uzytkownicy`
