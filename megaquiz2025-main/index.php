@@ -55,24 +55,19 @@ $result = $conn->query("
 
 <table border="1" cellpadding="5">
 <tr>
-    <th>Nazwa</th><th>Autor</th><th>Data dodania</th><th>Ilość pytań</th><th>Ocena</th><th>Kategoria</th><th>Premium</th><th>Akcja</th>
+    <th>Nazwa</th><th>Autor</th><th>Data dodania</th><th>Ilość pytań</th><th>Ocena</th><th>Kategoria</th><th>Premium</th>
 </tr>
 <?php while($row = $result->fetch_assoc()): ?>
 <tr>
-    <td><?=($row['nazwa'])?></td>
-    <td><?=($row['autor'])?></td>
-    <td><?=$row['data_dodania']?></td>
-    <td><?=$row['ilosc_pytan']?></td>
-    <td><?=$row['ocena_uz']?></td>
-    <td><?=($row['kategoria'])?></td>
-    <td><?=$row['premium'] ? 'tak':'nie'?></td>
-    <td>
-        <a href="graj.php?id=<?=$row['id']?>"><button>Graj</button></a>
-        <?php if(isset($_SESSION['id']) && $_SESSION['id'] == $row['id_autor']): ?>
-            <a href="edytuj_quiz.php?id=<?=$row['id']?>"><button>Edytuj</button></a>
-            <a href="usun_quiz.php?id=<?=$row['id']?>" onclick="return confirm('Na pewno usunąć?')"><button>Usuń</button></a>
-        <?php endif; ?>
-    </td>
+    <tr onclick="window.location='graj.php?id=<?= $row['id'] ?>'" style="cursor:pointer;">
+    <td><?= $row['nazwa'] ?></td>
+    <td><?= $row['autor'] ?></td>
+    <td><?= $row['data_dodania'] ?></td>
+    <td><?= $row['ilosc_pytan'] ?></td>
+    <td><?= $row['ocena_uz'] ?></td>
+    <td><?= $row['kategoria'] ?></td>
+    <td><?= $row['premium'] ? 'tak' : 'nie' ?></td>
+</tr>
 </tr>
 <?php endwhile; ?>
 </table>
