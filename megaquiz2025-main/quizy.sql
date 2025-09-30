@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Wrz 30, 2025 at 03:10 PM
+-- Generation Time: Wrz 30, 2025 at 08:55 PM
 -- Wersja serwera: 10.4.32-MariaDB
--- Wersja PHP: 8.2.12
+-- Wersja PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -71,11 +71,11 @@ CREATE TABLE `quizy` (
 --
 
 INSERT INTO `quizy` (`id`, `id_autor`, `data_dodania`, `nazwa`, `ilosc_pytan`, `kategoria_id`, `ocena_uz`, `ilosc_ocen`, `premium`) VALUES
-(1, 1, '2025-09-18 00:00:00', 'name', 0, 3, 0.9, 10, 0),
 (7, 10, '2025-09-30 14:44:43', 'dsfsdfsfsdfdsfdsdfs', 0, 1, 0.0, 0, 0),
 (5, 10, '2025-09-30 14:18:50', 'niepremium', 0, 1, 0.0, 0, 0),
 (6, 10, '2025-09-30 14:22:09', 'premium', 0, 1, 0.0, 0, 1),
-(8, 10, '2025-09-30 15:09:35', 'premium', 67, 1, 0.0, 0, 1);
+(8, 10, '2025-09-30 15:09:35', 'premium', 67, 1, 0.0, 0, 1),
+(10, 1, '2025-09-30 15:25:55', 'skibidi1234', 10, 2, 0.0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,9 @@ INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `premium`, `potwierd
 (2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka123', 0, 1, 0),
 (8, 'japko', 'jifijifiliski@gmail.com', '', 0, 0, 0),
 (9, 'a', 'a@wp.pl', '', 0, 0, 0),
-(10, 'userna', 'mailm@mail.com', 'password', 1, 1, 1);
+(10, 'userna', 'mailm@mail.com', 'password', 1, 1, 1),
+(12, 'jkljkl', 'jacek12prokop@gmail.com', 'jkljkljkl', 0, 1, 0),
+(13, 'hjkhjk', 'jacek12prokop@gmail.com', 'hjkhjkhjk', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +123,8 @@ CREATE TABLE `znajomi` (
 --
 
 INSERT INTO `znajomi` (`id_nadawcy`, `id_odbiorcy`, `przyjeto`) VALUES
-(2, 1, 0);
+(2, 1, 1),
+(13, 12, 1);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -159,13 +162,13 @@ ALTER TABLE `kategoria`
 -- AUTO_INCREMENT for table `quizy`
 --
 ALTER TABLE `quizy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `uzytkownicy`
 --
 ALTER TABLE `uzytkownicy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
