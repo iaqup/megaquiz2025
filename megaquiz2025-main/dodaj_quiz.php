@@ -47,9 +47,11 @@ $kat = $conn->query("SELECT * FROM kategoria");
             <option value="<?=$row['id']?>"><?=($row['nazwa'])?></option>
         <?php endwhile; ?>
     </select><br><br>
-
+    <?php
+    if(isset($_SESSION['premium']) && $_SESSION['premium'] == '1'): ?>
     <label>Premium:</label>
-    <input type="checkbox" name="premium"><br><br>
+    <input type="checkbox" name="premium" default="0"><br><br>
+    <?php endif; ?>
 
     <input type="submit" name="submit" value="Utwórz quiz">
 </form>
