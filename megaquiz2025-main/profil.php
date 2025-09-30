@@ -26,6 +26,7 @@
             echo '<td>'.$row['ocena_uz'].'</td>';
             echo '<td>'.$kategoria->fetch_assoc()['nazwa'].'</td>';
             echo '<td>'.($row['premium'] ? 'Tak' : 'Nie').'</td>';
+            echo '<td><a href="usun_quiz.php?id='.$row['id'].'" onclick="return confirm(\'Czy na pewno chcesz usunąć ten quiz?\')"><button>Usuń quiz</button></a></td>';
             echo '</tr>';
         }
         ?>
