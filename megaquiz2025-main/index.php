@@ -1,5 +1,9 @@
 <?php
 session_start();
+$_SESSION['quiz_id']= 0;
+$_SESSION['pytanie']= 0;
+$_SESSION['pozostało']= 0;
+$_SESSION['poprawne']= 0;
 $conn = new mysqli("localhost","root","","quizy");
 
 $sort_options = [
@@ -59,7 +63,7 @@ $result = $conn->query("
 </tr>
 <?php while($row = $result->fetch_assoc()): ?>
 <tr>
-    <tr onclick="window.location='graj.php?id=<?= $row['id'] ?>'" style="cursor:pointer;">
+    <tr onclick="window.location='graj.php'" style="cursor:pointer;">
     <td><?= $row['nazwa'] ?></td>
     <td><?= $row['autor'] ?></td>
     <td><?= $row['data_dodania'] ?></td>
@@ -71,5 +75,6 @@ $result = $conn->query("
 </tr>
 <?php endwhile; ?>
 </table>
+
 </body>
 </html>
