@@ -16,12 +16,11 @@ if(isset($_POST['submit'])){
     $kategoria = intval($_POST['kategoria']);
     $premium = isset($_POST['premium']) ? 1 : 0;
     $id_autor = $_SESSION['id'];
-    $ilpytan = intval($_POST['ilopyt']);
     $conn->query("INSERT INTO quizy (`id_autor`,`data_dodania`,`nazwa`,`ilosc_pytan`,`kategoria_id`,`ocena_uz`,`ilosc_ocen`,`premium`) 
-                  VALUES ('$id_autor',NOW(),'$nazwa',$ilpytan,'$kategoria',0,0,'$premium')");
+                  VALUES ('$id_autor',NOW(),'$nazwa',0,'$kategoria',0,0,'$premium')");
     $quiz_id = $conn->insert_id;
 
-    header("Location: dodaj_pytanie.php?id=$quiz_id");
+    header("Location: dodaj_pytanie.php?id=$quiz_id&pytanie=1");
     exit();
 }
 
@@ -39,8 +38,6 @@ $kat = $conn->query("SELECT * FROM kategoria");
 <form method="post">
     <label>Nazwa quizu:</label><br>
     <input type="text" name="nazwa" required><br><br>
-    <label>Ilość pytań:</label><br>
-    <input type="number" name="ilopyt" required><br><br>
     <label>Kategoria:</label><br>
     <select name="kategoria" required>
         <?php while($row = $kat->fetch_assoc()): ?>
