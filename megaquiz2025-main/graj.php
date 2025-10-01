@@ -1,12 +1,6 @@
 <?php
 session_start();
 $conn = new mysqli("localhost", "root", "", "quizy");
-$quiz_id = intval($_GET['id'] ?? 0);
-
-$quiz = $conn->query("SELECT * FROM `quizy` WHERE `id` = '$quiz_id'")->fetch_assoc();
-if (!$quiz) die("Nie znaleziono quizu.");
-
-$pytania = $conn->query("SELECT * FROM `pytania` WHERE `quiz_id` = '$quiz_id'");
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -16,25 +10,16 @@ $pytania = $conn->query("SELECT * FROM `pytania` WHERE `quiz_id` = '$quiz_id'");
 </head>
 <body>
 <h1><?=($quiz['nazwa'])?></h1>
-<form action="wynik.php" method="post">
-    <input type="hidden" name="quiz_id" value="<?=$quiz_id?>">
-    <?php
-    $i = 1;
-    while ($pytanie = $pytania->fetch_assoc()) {
-        echo "<h3>$i. ".($pytanie['tresc'])."</h3>";
-        if ($pytanie['typ'] === "abcd") {
-            $odp = $conn->query("SELECT * FROM `odpowiedzi` WHERE `pytanie_id`=".$pytanie['id']);
-            while ($o = $odp->fetch_assoc()) {
-                echo '<label><input type="radio" name="odp['.$pytanie['id'].']" value="'.$o['id'].'"> '.($o['tresc']).'</label><br>';
-            }
-        } else {
-            echo '<input type="text" name="odp['.$pytanie['id'].']" placeholder="Twoja odpowiedź"><br>';
-        }
-        $i++;
-    }
-    ?>
+<div>Poprawne odpowiedzi: <?=$_SESSION['poprawne']?> / <?=$_SESSION['pytanie']?><br>Pozostało: <?=intval($_SESSION['suma_pytan'])-intval($_SESSION['pytanie'])?></div>
+<form method="post">
+    <label>Treść pytania:</label><br>
+    <textarea name="tresc" required></textarea><br><br>
+        <?php for($i=1; $i<=4; $i++): ?>
+            <input type="text" name="odp<?=$i?>" placeholder="Odpowiedź <?=$i?>">
+            <input type="radio" name="poprawna" value="<?=$i?>"> Poprawna<br>
+        <?php endfor; ?>
     <br>
-    <input type="submit" name="submit" value="Zakończ quiz">
+    <input type="submit" name="submit" value="Dodaj pytanie">
 </form>
 </body>
 </html>
