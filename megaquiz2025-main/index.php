@@ -28,11 +28,11 @@ $result = $conn->query("
     <title>Mega Quizy - Strona główna</title>
 </head>
 <body>
-    <nav class="hotbar">
-  <div class="left">
-    <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a>
+    <nav class= "hotbar">
+        <div class="left">
+    <a href="index.php">  <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a></a>
   </div>
-    </nav>
+        <div>
 <?php if(isset($_SESSION['user'])): ?>
     Witaj, <?=($_SESSION['user'])?>
     <a href="wyloguj.php"><button>Wyloguj się</button></a>
@@ -81,4 +81,5 @@ $result = $conn->query("
 </table>
 </body>
 </html>
+
 
