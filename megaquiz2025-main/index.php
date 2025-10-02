@@ -21,7 +21,7 @@ $result = $conn->query("
     FROM quizy q
     JOIN kategoria k ON q.kategoria_id = k.id
     JOIN uzytkownicy u ON q.id_autor = u.id
-    ORDER BY $order_by
+    ORDER BY $order_by LIMIT 10
 ");
 ?>
 <!DOCTYPE html>
@@ -78,3 +78,4 @@ $result = $conn->query("
 
 </body>
 </html>
+
