@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="Znajomi.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Znajomi</title>
 </head>
 <body>
+    <nav class="hotbar">
+  <div class="left">
+    <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a>
+  </div>
+    </nav>
     <h1>Twoi znajomi:</h1>
     <form method="post" style="margin-bottom:20px;">
         <label for="add_friend">Dodaj znajomego po nazwie:</label>
@@ -82,4 +88,5 @@
         ?>
     </table>
 </body>
+
 </html>
