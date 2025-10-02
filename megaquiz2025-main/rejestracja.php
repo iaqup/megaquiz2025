@@ -25,8 +25,26 @@ $conn = new mysqli("localhost","root","","quizy");
         $haslo2 = $_POST['haslo2'];
 
         if (!empty($email) && !empty($users) && !empty($haslo) && !empty($haslo2)) {
+            $check_user = $conn->query("SELECT id FROM `uzytkownicy` WHERE nazwa = '$users'");
+            $check_email = $conn->query("SELECT id FROM `uzytkownicy` WHERE email = '$email'");
+            if (!ctype_alnum($users)) {
+                echo '<div style="color:red;">Nazwa użytkownika nie spełnia wymagań, dozwolone są wyłącznie litery oraz cyfry.</div>';
+            }
+            else if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!._]{8,16}$/', $haslo)) {
+                echo '<div style="color:red;">Hasło nie spełnia wymagań; dozwolone są wyłącznie litery, cyfry oraz znaki specjalne ! . _</div>';
+            }
+            else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo '<div style="color:red;">Nieprawidłowy mail!</div>';
+            }
+            else if ($check_user->num_rows > 0) {
+                echo '<div style="color:red;">Nazwa użytkownika jest zajęta!</div>';
+            }
+            else if ($check_email->num_rows > 0) {
+                echo '<div style="color:red;">Istnieje już konto powiązane z tym mailem!</div>';
+            }
 
-            if($haslo == $haslo2){
+            else if($haslo == $haslo2){
+                
                 $haslo_hash = password_hash($haslo, PASSWORD_DEFAULT);
                 $conn->query("INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `potwierdzony`) VALUES (NULL, '$users', '$email', '$haslo_hash', 1)");
                 $user_id = $conn->insert_id;
@@ -48,5 +66,7 @@ $conn = new mysqli("localhost","root","","quizy");
         }
     }
     ?>
+    Masz już konto? <a href="logowanie.php">Zaloguj się</a>
 </body>
 </html>
+
