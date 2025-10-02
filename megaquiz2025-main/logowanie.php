@@ -11,10 +11,19 @@ $conn->set_charset("utf8mb4");
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <link rel="stylesheet" href="logowanie.css">
     <meta charset="UTF-8">
     <title>Logowanie</title>
 </head>
 <body>
+        <nav class="hotbar">
+  <div class="left">
+    <a href="index.php"><a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a></a>
+  </div>
+  <div class="right">
+    <a href="rejestracja.php">Zarejestruj się</a>
+  </div>
+</nav>
     <h1>Zaloguj się</h1>
     <form action="logowanie.php" method="post">
         <input name="user" placeholder="Email / nazwa użytkownika" minlength="6" maxlength="60" required>
