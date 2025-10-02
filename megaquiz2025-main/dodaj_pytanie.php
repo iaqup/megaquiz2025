@@ -1,32 +1,57 @@
 <?php
 session_start();
-if(!isset($_SESSION['id'])) {
-    header("Location: logowanie.php");
-    exit();
+if(!isset($_SESSION['id'])) { 
+    header("Location: logowanie.php"); 
+    exit(); 
 }
 
 $conn = new mysqli("localhost","root","","quizy");
-if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
+if($conn->connect_error) 
+    die("Błąd połączenia: " . $conn->connect_error);
 
 $quiz_id = intval($_GET['id'] ?? 0);
-$quiz = $conn->query("SELECT * FROM quizy WHERE id='$quiz_id'")->fetch_assoc();
+$quiz = $conn->query("SELECT * FROM quizy WHERE id=$quiz_id")->fetch_assoc();
 if(!$quiz) die("Nie znaleziono quizu");
 
+$count = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id")->fetch_assoc()['c'];
+$max_pytan = $quiz['ilosc_pytan'];
+$error = '';
+
 if(isset($_POST['submit'])){
-    $tresc = $conn->real_escape_string($_POST['tresc']);
-    $pytanie = $_GET['pytanie'];
-    $pyt1 = $_POST['odp1'];
-    $pyt2 = $_POST['odp2'];
-    $pyt3 = $_POST['odp3'];
-    $pyt4 = $_POST['odp4'];
-    $popr = $_POST['poprawna'];    
-    $conn->query("INSERT INTO `pytania`(`id`, `tresc`, `A`, `B`, `C`, `D`, `poprawne`) VALUES (NULL,$tresc,$pyt1,$pyt2,$pyt3,$pyt4,$popr);");
-    $pytanie_id = $conn->insert_id;
-    $conn->query("INSERT INTO `quizy-pytania`(`id_quiz`, `id_pytanie`) VALUES ($quiz_id,$pytanie_id);");
-    $conn->query("UPDATE quizy SET ilosc_pytan=$pytanie WHERE id='$quiz_id'");
-    $pytanie++;
-    header("Location: dodaj_pytanie.php?id=$quiz_id&pytanie=$pytanie");
-    exit();
+    if($count >= $max_pytan){
+        echo "<p>Osiągnięto maksymalną liczbę pytań ($max_pytan). Wracamy na stronę główną...</p>";
+        echo "<script>setTimeout(()=>{ window.location='index.php'; }, 2000);</script>";
+        exit();
+    }
+
+    $tresc = trim($_POST['tresc']);
+    if($tresc === '') $error = "Treść pytania nie może być pusta.";
+
+    if(!$error){
+        $conn->query("INSERT INTO pytania (quiz_id, tresc, typ, kolejnosc) 
+                      VALUES ('$quiz_id', '$tresc', 'abcd', ".($count+1).")");
+        $pytanie_id = $conn->insert_id;
+
+        for($i=1; $i<=4; $i++){
+            $odp = trim($_POST["odp$i"]);
+            if($odp !== ''){
+                $poprawna = (isset($_POST['poprawna']) && $_POST['poprawna']==$i) ? 1 : 0;
+                $conn->query("INSERT INTO odpowiedzi (pytanie_id, tresc, poprawna, kolejnosc) 
+                              VALUES ('$pytanie_id','$odp','$poprawna','$i')");
+            }
+        }
+
+        $count++; 
+
+        if($count >= $max_pytan){
+            echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
+            echo "<script>setTimeout(()=>{ window.location='index.php'; }, 2000);</script>";
+            exit();
+        }
+
+        header("Location: dodaj_pytanie.php?id=$quiz_id");
+        exit();
+    }
 }
 ?>
 
@@ -38,20 +63,24 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 <h1>Quiz: <?=htmlspecialchars($quiz['nazwa'])?></h1>
+<p>Pytanie <?=($count+1)?> z <?=$max_pytan?></p>
+
+<?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
 
 <form method="post">
     <label>Treść pytania:</label><br>
     <textarea name="tresc" required></textarea><br><br>
-        <?php for($i=1; $i<=4; $i++): ?>
-            <input type="text" name="odp<?=$i?>" placeholder="Odpowiedź <?=$i?>">
-            <input type="radio" name="poprawna" value="<?=$i?>"> Poprawna<br>
+
+    <div>
+        <?php for($i=1;$i<=4;$i++): ?>
+            <input type="text" name="odp<?=$i?>" placeholder="Odpowiedź <?=$i?>" required>
+            <input type="radio" name="poprawna" value="<?=$i?>" required> Poprawna<br>
         <?php endfor; ?>
-    <br>
+    </div>
+
     <input type="submit" name="submit" value="Dodaj pytanie">
 </form>
 
-<br>
-<a href="index.php"><button>Zakończ tworzenie</button></a>
-
+<a href="index.php"><button>Powrót do strony głównej</button></a>
 </body>
 </html>
