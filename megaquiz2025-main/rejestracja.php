@@ -4,10 +4,19 @@ $conn = new mysqli("localhost","root","","quizy");
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <link rel="stylesheet" href="rejestracja.css">
     <meta charset="UTF-8">
     <title>Rejestracja</title>
 </head>
 <body>
+    <nav class="hotbar">
+  <div class="left">
+    <a href="index.php">  <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a></a>
+  </div>
+  <div class="right">
+    <a href="logowanie.php">Zaloguj się</a>
+  </div>
+    </nav>
     <h1>Zarejestruj się</h1>
     <form action="rejestracja.php" method="post">
         <input type="email" name="email" placeholder="Email" maxlength="60" required>
@@ -69,5 +78,6 @@ $conn = new mysqli("localhost","root","","quizy");
     Masz już konto? <a href="logowanie.php">Zaloguj się</a>
 </body>
 </html>
+
 
 
