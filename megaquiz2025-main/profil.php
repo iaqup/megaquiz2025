@@ -24,11 +24,17 @@ $result = $conn->query("
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="profil.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil użytkownika</title>
 </head>
 <body>
+    <nav class="hotbar">
+  <div class="left">
+    <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a>
+  </div>
+</nav>
     <h1>Twoje quizy:</h1>
     <form method="get" style="margin-bottom:10px;">
     <label for="sort">Sortuj według:</label>
@@ -64,3 +70,4 @@ $result = $conn->query("
     </a>
 </body>
 </html>
+
