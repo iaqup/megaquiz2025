@@ -1,9 +1,5 @@
 <?php
 session_start();
-$_SESSION['quiz_id']= 0;
-$_SESSION['pytanie']= 0;
-$_SESSION['pozostało']= 0;
-$_SESSION['poprawne']= 0;
 $conn = new mysqli("localhost","root","","quizy");
 
 $sort_options = [
@@ -27,10 +23,13 @@ $result = $conn->query("
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <title>Mega Quizy - Strona główna</title>
 </head>
 <body>
+    <nav class= "hotbar">
+        <div>
 <?php if(isset($_SESSION['user'])): ?>
     Witaj, <?=($_SESSION['user'])?>
     <a href="wyloguj.php"><button>Wyloguj się</button></a>
@@ -44,6 +43,8 @@ $result = $conn->query("
     <a href="logowanie.php"><button>Zaloguj się</button></a>
     <a href="rejestracja.php"><button>Zarejestruj się</button></a>
 <?php endif; ?>
+</div>
+</nav>
 
 <h1>Lista quizów</h1>
 <form method="get" style="margin-bottom:10px;">
@@ -63,7 +64,7 @@ $result = $conn->query("
 </tr>
 <?php while($row = $result->fetch_assoc()): ?>
 <tr>
-    <tr onclick="window.location='graj.php'" style="cursor:pointer;">
+    <tr onclick="window.location='graj.php?id=<?= $row['id'] ?>'" style="cursor:pointer;">
     <td><?= $row['nazwa'] ?></td>
     <td><?= $row['autor'] ?></td>
     <td><?= $row['data_dodania'] ?></td>
@@ -75,7 +76,5 @@ $result = $conn->query("
 </tr>
 <?php endwhile; ?>
 </table>
-
 </body>
 </html>
-
