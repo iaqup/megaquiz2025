@@ -30,8 +30,8 @@ $conn = new mysqli("localhost","root","","quizy");
             if (!ctype_alnum($users)) {
                 echo '<div style="color:red;">Nazwa użytkownika nie spełnia wymagań, dozwolone są wyłącznie litery oraz cyfry.</div>';
             }
-            else if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!._]{8,16}$/', $haslo)) {
-                echo '<div style="color:red;">Hasło nie spełnia wymagań; dozwolone są wyłącznie litery, cyfry oraz znaki specjalne ! . _</div>';
+            else if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!._@]{8,16}$/', $haslo)) {
+                echo '<div style="color:red;">Hasło nie spełnia wymagań; dozwolone są wyłącznie litery, cyfry oraz znaki specjalne !  .  _  @</div>';
             }
             else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 echo '<div style="color:red;">Nieprawidłowy mail!</div>';
@@ -69,4 +69,5 @@ $conn = new mysqli("localhost","root","","quizy");
     Masz już konto? <a href="logowanie.php">Zaloguj się</a>
 </body>
 </html>
+
 
