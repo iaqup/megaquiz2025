@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Wrz 30, 2025 at 08:55 PM
+-- Generation Time: Paź 02, 2025 at 09:10 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.0.30
 
@@ -24,62 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `kategoria`
---
-
-CREATE TABLE `kategoria` (
-  `id` int(11) NOT NULL,
-  `nazwa` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `kategoria`
---
-
-INSERT INTO `kategoria` (`id`, `nazwa`) VALUES
-(1, 'Historia'),
-(2, 'Geografia'),
-(3, 'Nauka'),
-(4, 'Kultura i sztuka'),
-(5, 'Sport'),
-(6, 'Technologia'),
-(7, 'Języki i literatura'),
-(8, 'Popkultura'),
-(9, 'Przyroda'),
-(10, 'Ciekawostki ogólne');
-
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `quizy`
---
-
-CREATE TABLE `quizy` (
-  `id` int(11) NOT NULL,
-  `id_autor` int(11) NOT NULL,
-  `data_dodania` datetime NOT NULL,
-  `nazwa` text NOT NULL,
-  `ilosc_pytan` int(11) NOT NULL,
-  `kategoria_id` int(11) NOT NULL,
-  `ocena_uz` decimal(5,1) NOT NULL,
-  `ilosc_ocen` int(11) NOT NULL,
-  `premium` tinyint(1) NOT NULL COMMENT 'true/false'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
-
---
--- Dumping data for table `quizy`
---
-
-INSERT INTO `quizy` (`id`, `id_autor`, `data_dodania`, `nazwa`, `ilosc_pytan`, `kategoria_id`, `ocena_uz`, `ilosc_ocen`, `premium`) VALUES
-(7, 10, '2025-09-30 14:44:43', 'dsfsdfsfsdfdsfdsdfs', 0, 1, 0.0, 0, 0),
-(5, 10, '2025-09-30 14:18:50', 'niepremium', 0, 1, 0.0, 0, 0),
-(6, 10, '2025-09-30 14:22:09', 'premium', 0, 1, 0.0, 0, 1),
-(8, 10, '2025-09-30 15:09:35', 'premium', 67, 1, 0.0, 0, 1),
-(10, 1, '2025-09-30 15:25:55', 'skibidi1234', 10, 2, 0.0, 0, 0);
-
--- --------------------------------------------------------
-
---
 -- Struktura tabeli dla tabeli `uzytkownicy`
 --
 
@@ -87,7 +31,7 @@ CREATE TABLE `uzytkownicy` (
   `id` int(11) NOT NULL,
   `nazwa` varchar(16) NOT NULL,
   `email` varchar(60) NOT NULL,
-  `haslo` varchar(10) NOT NULL,
+  `haslo` varchar(255) NOT NULL,
   `premium` tinyint(1) NOT NULL,
   `potwierdzony` tinyint(1) NOT NULL,
   `admin` tinyint(1) NOT NULL
@@ -98,49 +42,11 @@ CREATE TABLE `uzytkownicy` (
 --
 
 INSERT INTO `uzytkownicy` (`id`, `nazwa`, `email`, `haslo`, `premium`, `potwierdzony`, `admin`) VALUES
-(1, 'nazwauz', 'mail@mail.com', 'haslo123', 0, 0, 0),
-(2, 'mateusz', 'mushkartsi1@gmail.com', 'emilka123', 0, 1, 0),
-(8, 'japko', 'jifijifiliski@gmail.com', '', 0, 0, 0),
-(9, 'a', 'a@wp.pl', '', 0, 0, 0),
-(10, 'userna', 'mailm@mail.com', 'password', 1, 1, 1),
-(12, 'jkljkl', 'jacek12prokop@gmail.com', 'jkljkljkl', 0, 1, 0),
-(13, 'hjkhjk', 'jacek12prokop@gmail.com', 'hjkhjkhjk', 0, 1, 0);
-
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `znajomi`
---
-
-CREATE TABLE `znajomi` (
-  `id_nadawcy` int(11) NOT NULL,
-  `id_odbiorcy` int(11) NOT NULL,
-  `przyjeto` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `znajomi`
---
-
-INSERT INTO `znajomi` (`id_nadawcy`, `id_odbiorcy`, `przyjeto`) VALUES
-(2, 1, 1),
-(13, 12, 1);
+(25, 'asdasd', 'jacek12prokop@gmail.com', '$2y$10$jBqewraMif8ZzGM8wm720ecXtlR//0vOvLuH0xW9vSzALSAGroscK', 0, 1, 0);
 
 --
 -- Indeksy dla zrzutów tabel
 --
-
---
--- Indeksy dla tabeli `kategoria`
---
-ALTER TABLE `kategoria`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeksy dla tabeli `quizy`
---
-ALTER TABLE `quizy`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `uzytkownicy`
@@ -153,22 +59,10 @@ ALTER TABLE `uzytkownicy`
 --
 
 --
--- AUTO_INCREMENT for table `kategoria`
---
-ALTER TABLE `kategoria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `quizy`
---
-ALTER TABLE `quizy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
 -- AUTO_INCREMENT for table `uzytkownicy`
 --
 ALTER TABLE `uzytkownicy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
