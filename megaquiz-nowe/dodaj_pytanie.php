@@ -14,16 +14,16 @@ $quiz = $conn->query("SELECT * FROM quizy WHERE id=$quiz_id")->fetch_assoc();
 if(!$quiz) die("Nie znaleziono quizu");
 
 $count = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id")->fetch_assoc()['c'];
-$max_pytan = $quiz['ilosc_pytan'];
 $error = '';
 
-if(isset($_POST['submit'])){
-    if($count >= $max_pytan){
-        echo "<p>Osiągnięto maksymalną liczbę pytań ($max_pytan). Wracamy na stronę główną...</p>";
-        echo "<script>setTimeout(()=>{ window.location='index.php'; }, 2000);</script>";
-        exit();
-    }
+if(isset($_POST['finish'])){
+    $conn->query("UPDATE quizy SET ilosc_pytan = (SELECT COUNT(*) FROM pytania WHERE quiz_id=$quiz_id) WHERE id=$quiz_id");
+    echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
+    echo "<script>setTimeout(()=>{ window.location='index.php'; }, 800);</script>";
+    exit();
+}
 
+if(isset($_POST['submit'])){
     $tresc = trim($_POST['tresc']);
     if($tresc === '') $error = "Treść pytania nie może być pusta.";
 
@@ -41,13 +41,7 @@ if(isset($_POST['submit'])){
             }
         }
 
-        $count++; 
-
-        if($count >= $max_pytan){
-            echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
-            echo "<script>setTimeout(()=>{ window.location='index.php'; }, 2000);</script>";
-            exit();
-        }
+        $conn->query("UPDATE quizy SET ilosc_pytan = ilosc_pytan + 1 WHERE id=$quiz_id");
 
         header("Location: dodaj_pytanie.php?id=$quiz_id");
         exit();
@@ -63,7 +57,7 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 <h1>Quiz: <?=htmlspecialchars($quiz['nazwa'])?></h1>
-<p>Pytanie <?=($count+1)?> z <?=$max_pytan?></p>
+<p>Aktualna liczba pytań: <?=$count?></p>
 
 <?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
 
@@ -78,9 +72,8 @@ if(isset($_POST['submit'])){
         <?php endfor; ?>
     </div>
 
-    <input type="submit" name="submit" value="Dodaj pytanie">
+    <input type="submit" name="submit" value="Dodaj kolejne pytanie">
+    <input type="submit" name="finish" value="Zakończ tworzenie">
 </form>
-
-<a href="index.php"><button>Powrót do strony głównej</button></a>
 </body>
 </html>
