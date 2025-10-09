@@ -1,7 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost","root","","quizy");
-
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 if (!isset($_SESSION['id'])) {
     header("Location: index.php");
     exit();

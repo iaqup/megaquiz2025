@@ -5,7 +5,7 @@ if(!isset($_SESSION['id'])) {
     exit(); 
 }
 
-$conn = new mysqli("localhost","root","","quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
 if($conn->connect_error) 
     die("Błąd połączenia: " . $conn->connect_error);
 

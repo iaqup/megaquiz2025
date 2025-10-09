@@ -20,7 +20,7 @@
     </form>
     <?php
     session_start();
-    $conn = new mysqli("localhost", "root", "", "quizy");
+    $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
     $user_id = $_SESSION['id'];
     if (isset($_POST['submit_add']) && isset($_POST['add_friend'])) {
         $nazwa_znaj = $conn->real_escape_string($_POST['add_friend']);
@@ -53,6 +53,7 @@
         </tr>
         <?php
         $result = $conn->query("SELECT * FROM `znajomi` JOIN `uzytkownicy`  ON znajomi.id_nadawcy = uzytkownicy.id WHERE (`id_nadawcy` = '$user_id' OR `id_odbiorcy` = '$user_id') AND `przyjeto` = '1'");
+        if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             if ($row['id_nadawcy'] == $user_id) {
                 $drugi = $row['id_odbiorcy'];
@@ -65,6 +66,10 @@
             echo '<td><a href="usun_znajomego.php?id=' . $drugi . '" onclick="return confirm(\'Czy na pewno chcesz usunąć tego znajomego?\');"><button>Usuń</button></a></td>';
             echo '</tr>';
         }
+        }
+        else {
+            echo '<tr><td>Brak znajomych. Weź może dodaj kogoś!</td>';
+        }
         ?>
     </table>
 
@@ -76,6 +81,7 @@
         </tr>
         <?php
         $oczekujace = $conn->query("SELECT * FROM `znajomi`  JOIN `uzytkownicy`  ON znajomi.id_nadawcy = uzytkownicy.id WHERE znajomi.id_odbiorcy = '$user_id' AND znajomi.przyjeto = '0'");
+        if ($oczekujace->num_rows > 0){
         while ($row = $oczekujace->fetch_assoc()) {
             echo '<tr>';
             echo '<td>' . $row['nazwa'] . '</td>';
@@ -84,6 +90,10 @@
             echo '<a href="odrzuc.php?id=' . $row['id'] . '"><button>Odrzuć</button></a>';
             echo '</td>';
             echo '</tr>';
+        }
+        }
+        else {
+            echo '<tr><td>Brak przychodzących zaproszeń.</td>';
         }
         ?>
     </table>

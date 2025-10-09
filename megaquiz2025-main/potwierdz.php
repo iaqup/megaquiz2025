@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost","root","", "quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 
 $user_id = intval($_GET['id'] ?? 0);
 

@@ -8,7 +8,7 @@
 <body>
     <?php
     session_start();
-    $conn = new mysqli("localhost", "root", "", "quizy");
+    $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
     $user_id = $_SESSION['id'];
     if (isset($_GET['id'])) {
         $x = intval($_GET['id']);

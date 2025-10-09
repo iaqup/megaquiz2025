@@ -1,5 +1,5 @@
 <?php 
-$conn = new mysqli("localhost","root","","quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 ?>
 <!DOCTYPE html>
 <html lang="pl">

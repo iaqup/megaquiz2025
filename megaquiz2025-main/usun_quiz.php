@@ -4,7 +4,7 @@ if(!isset($_SESSION['id'])) {
     header("Location: logowanie.php");
     exit();
 }
-$conn = new mysqli("localhost","root","","quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
 $id = intval($_GET['id'] ?? 0);
 $conn->query("DELETE FROM quizy WHERE id='$id' AND id_autor='".$_SESSION['id']."'");

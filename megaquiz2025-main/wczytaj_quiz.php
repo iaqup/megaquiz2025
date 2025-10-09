@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-$conn = new mysqli("localhost","root","","quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 if ($conn->connect_errno) {
     echo json_encode(['error'=>'DB error']); exit; 
 }

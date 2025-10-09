@@ -1,7 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost","root","","quizy");
-
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
 $sort_options = [
     'date' => '`data_dodania` DESC',
     'questions' => '`ilosc_pytan` DESC',

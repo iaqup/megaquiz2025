@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
 
 if ($conn->connect_error) {
     die("Błąd połączenia: " . $conn->connect_error);
@@ -23,16 +23,9 @@ $punkty = 0;
 $wszystkie = $pytania->num_rows;
 
 while ($pytanie = $pytania->fetch_assoc()) {
-    if ($pytanie['typ'] === "abcd") {
-        $poprawna = $conn->query("SELECT id FROM odpowiedzi WHERE pytanie_id=" . $pytanie['id'] . " AND poprawna=1")->fetch_assoc();
-        if (isset($odpowiedzi[$pytanie['id']]) && $odpowiedzi[$pytanie['id']] == $poprawna['id']) {
-            $punkty++;
-        }
-    } elseif ($pytanie['typ'] === "otwarte") {
-        $poprawna = $conn->query("SELECT tresc FROM odpowiedzi WHERE pytanie_id=" . $pytanie['id'] . " AND poprawna=1")->fetch_assoc();
-        if (isset($odpowiedzi[$pytanie['id']]) && trim(strtolower($odpowiedzi[$pytanie['id']])) === trim(strtolower($poprawna['tresc']))) {
-            $punkty++;
-        }
+    $poprawna = $conn->query("SELECT id FROM odpowiedzi WHERE pytanie_id=" . $pytanie['id'] . " AND poprawna=1")->fetch_assoc();
+    if (isset($odpowiedzi[$pytanie['id']]) && $odpowiedzi[$pytanie['id']] == $poprawna['id']) {
+        $punkty++;
     }
 }
 
