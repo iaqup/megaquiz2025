@@ -67,7 +67,7 @@ $result = $conn->query("
 </tr>
 <?php while($row = $result->fetch_assoc()): ?>
 <tr>
-    <tr onclick="window.location='graj.php?id=<?= $row['id'] ?>'" style="cursor:pointer;">
+    <tr onclick="window.location='graj.html?id=<?= $row['id'] ?>'" style="cursor:pointer;">
     <td><?= $row['nazwa'] ?></td>
     <td><?= $row['autor'] ?></td>
     <td><?= $row['data_dodania'] ?></td>

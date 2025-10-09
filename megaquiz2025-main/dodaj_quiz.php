@@ -1,9 +1,9 @@
 <?php
 session_start();
 if(!isset($_SESSION['id'])) {
-     header("Location: logowanie.php"); 
-     exit(); 
-    }
+    header("Location: logowanie.php"); 
+    exit(); 
+}
 
 $conn = new mysqli("localhost","root","","quizy");
 if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
@@ -15,18 +15,17 @@ if(isset($_POST['submit'])){
     $kategoria = intval($_POST['kategoria']);
     $premium = isset($_POST['premium']) ? 1 : 0;
     $id_autor = $_SESSION['id'];
-    $ilosc_pytan = intval($_POST['ilopyt']);
 
-    if($nazwa !== '' && $ilosc_pytan > 0){
+    if($nazwa !== ''){
         $conn->query("INSERT INTO quizy (id_autor, data_dodania, nazwa, ilosc_pytan, kategoria_id, ocena_uz, ilosc_ocen, premium) 
-                      VALUES ('$id_autor', NOW(), '$nazwa', '$ilosc_pytan', '$kategoria', 0, 0, '$premium')");
+                      VALUES ('$id_autor', NOW(), '$nazwa', 0, '$kategoria', 0, 0, '$premium')");
         if($conn->error) die("Błąd przy tworzeniu quizu: ".$conn->error);
         $quiz_id = $conn->insert_id;
 
         header("Location: dodaj_pytanie.php?id=$quiz_id");
         exit();
     } else {
-        $error = "Wprowadź poprawną nazwę i ilość pytań.";
+        $error = "Wprowadź poprawną nazwę quizu.";
     }
 }
 
@@ -48,13 +47,10 @@ $kat = $conn->query("SELECT * FROM kategoria");
     <label>Nazwa quizu:</label><br>
     <input type="text" name="nazwa" required><br><br>
 
-    <label>Ilość pytań:</label><br>
-    <input type="number" name="ilopyt" min="1" required><br><br>
-
     <label>Kategoria:</label><br>
     <select name="kategoria" required>
         <?php while($row = $kat->fetch_assoc()): ?>
-            <option value="<?=$row['id']?>"><?=($row['nazwa'])?></option>
+            <option value="<?=$row['id']?>"><?=htmlspecialchars($row['nazwa'])?></option>
         <?php endwhile; ?>
     </select><br><br>
 
