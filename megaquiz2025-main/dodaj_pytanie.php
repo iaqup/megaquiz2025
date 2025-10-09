@@ -5,7 +5,7 @@ if(!isset($_SESSION['id'])) {
     exit(); 
 }
 
-$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn = new mysqli("localhost","root","","quizy");
 if($conn->connect_error) 
     die("Błąd połączenia: " . $conn->connect_error);
 
@@ -17,10 +17,16 @@ $count = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id"
 $error = '';
 
 if(isset($_POST['finish'])){
-    $conn->query("UPDATE quizy SET ilosc_pytan = (SELECT COUNT(*) FROM pytania WHERE quiz_id=$quiz_id) WHERE id=$quiz_id");
-    echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
-    echo "<script>setTimeout(()=>{ window.location='index.php'; }, 800);</script>";
-    exit();
+    // sprawdzamy, czy quiz ma przynajmniej jedno pytanie
+    $count_check = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id")->fetch_assoc()['c'];
+    if($count_check == 0){
+        $error = "Nie możesz zakończyć tworzenia quizu bez żadnych pytań!";
+    } else {
+        $conn->query("UPDATE quizy SET ilosc_pytan = $count_check WHERE id=$quiz_id");
+        echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
+        echo "<script>setTimeout(()=>{ window.location='index.php'; }, 800);</script>";
+        exit();
+    }
 }
 
 if(isset($_POST['submit'])){
@@ -53,6 +59,7 @@ if(isset($_POST['submit'])){
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="logoo.png">
 <title>Dodaj pytanie do quizu</title>
 </head>
 <body>
@@ -72,7 +79,7 @@ if(isset($_POST['submit'])){
         <?php endfor; ?>
     </div>
 
-    <input type="submit" name="submit" value="Dodaj kolejne pytanie">
+    <input type="submit" name="submit" value="Dodaj pytanie">
     <input type="submit" name="finish" value="Zakończ tworzenie">
 </form>
 </body>
