@@ -55,9 +55,9 @@ input[type="checkbox"] {
 }
 
 input[type="submit"] {
-  background-color: #b86608;
+  background-color: #4CAF50;
   color: black;
-  border: 2px dotted #5c3400;
+  border: 2px dotted #4CAF50;
   padding: 15px;
   border-radius: 6px;
   cursor: pointer;
@@ -92,5 +92,6 @@ a button {
 }
 
 a button:hover {
-  background-color: orange;
+  background-color: #4CAF50;
 }
+
