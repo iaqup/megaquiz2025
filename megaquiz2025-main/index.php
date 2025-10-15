@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn = new mysqli("localhost","root","","quizy");
 $sort_options = [
     'date' => '`data_dodania` DESC',
     'questions' => '`ilosc_pytan` DESC',
@@ -40,10 +40,10 @@ $result = $conn->query("
     <?php if($_SESSION['admin'] == '1'): ?>
         <a href="admin.php"><button>Panel admina</button></a>
     <?php endif; ?>
-    <a href="dodaj_quiz.php"><button>Utwórz nowy quiz</button></a>
+    <a href="dodaj_quiz.php"><button>Utwórz nowy quiz _</button></a>
 <?php else: ?>
     <a href="logowanie.php"><button>Zaloguj się</button></a>
-    <a href="rejestracja.php"><button>Zarejestruj się</button></a>
+    <a href="rejestracja.php"><button>Zarejestruj się _</button></a>
 <?php endif; ?>
 </div>
 </nav>
@@ -80,5 +80,7 @@ $result = $conn->query("
 </table>
 </body>
 </html>
+
+
 
 
