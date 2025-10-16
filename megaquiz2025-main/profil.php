@@ -1,6 +1,11 @@
 <?php
 session_start();
 $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn->set_charset("utf8mb4");
+if(!isset($_SESSION['id'])) { 
+    header("Location: logowanie.php"); 
+    exit(); 
+}
 if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
 $sort_options = [
     'date' => '`data_dodania` DESC',
@@ -20,6 +25,7 @@ $result = $conn->query("
     JOIN uzytkownicy u ON q.id_autor = u.id WHERE q.id_autor = '".$_SESSION['id']."'
     ORDER BY $order_by
 ");
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,20 +54,23 @@ $result = $conn->query("
 </form>
     <table>
     <tr>
-        <th>Nazwa</th><th>Ilosc pytan</th><th>Data dodania</th><th>Ocena</th><th>Kategoria</th><th>Premium</th>
+        <th>Nazwa</th><th>Ilosc pytan</th><th>Data dodania</th><th>Ocena</th><th>Kategoria</th><th>Premium</th><th>Akcje</th>
     </tr>
         <?php
+        if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()){
-            $kategoria = $conn->query("SELECT nazwa FROM `kategoria` where id = ".$row['kategoria_id']);
             echo '<tr>';
             echo '<td>'.$row['nazwa'].'</td>';
             echo '<td>'.$row['ilosc_pytan'].'</td>';
             echo '<td>'.$row['data_dodania'].'</td>';
             echo '<td>'.$row['ocena_uz'].'</td>';
-            echo '<td>'.$kategoria->fetch_assoc()['nazwa'].'</td>';
+            echo '<td>'.$row['kategoria'].'</td>';
             echo '<td>'.($row['premium'] ? 'Tak' : 'Nie').'</td>';
             echo '<td><a href="usun_quiz.php?id='.$row['id'].'" onclick="return confirm(\'Czy na pewno chcesz usunąć ten quiz?\')"><button>Usuń quiz</button></a></td>';
             echo '</tr>';
+        }
+        } else {
+            echo '<tr><td colspan="8">Nie masz jeszcze żadnych quizów.</td></tr>';
         }
         ?>
     </table>

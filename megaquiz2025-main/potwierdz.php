@@ -1,11 +1,15 @@
 <?php
 session_start();
-$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
-
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn->set_charset("utf8mb4");
 $user_id = intval($_GET['id'] ?? 0);
-
+if(!isset($_SESSION['id'])) { 
+    header("Location: logowanie.php"); 
+    exit(); 
+}
 if (isset($_POST['potwierdz'])) {
     $conn->query("UPDATE `uzytkownicy` SET `potwierdzony` = 1 WHERE `id` = '$user_id'");
+    $conn->close();
     header("Location: index.php");
     exit();
 }
@@ -15,13 +19,8 @@ if (isset($_POST['potwierdz'])) {
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Potwierdź konto</title>
+    <title>Potwierdź znajomość</title>
 </head>
 <body>
-    <h1>Dziękujemy za rejestrację!</h1>
-    <p>Kliknij przycisk, aby potwierdzić konto i przejść do strony głównej.</p>
-    <form method="post">
-        <input type="submit" name="potwierdz" value="Potwierdź konto">
-    </form>
 </body>
 </html>

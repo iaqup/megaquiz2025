@@ -6,6 +6,7 @@ if(!isset($_SESSION['id'])) {
 }
 
 $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn->set_charset("utf8mb4");
 if($conn->connect_error) die("Błąd połączenia: " . $conn->connect_error);
 
 $error = '';
@@ -37,11 +38,12 @@ $kat = $conn->query("SELECT * FROM kategoria");
 <head>
 <meta charset="UTF-8">
 <title>Dodaj nowy quiz</title>
+<link rel="stylesheet" href="dodaj_quiz.css">
 </head>
 <body>
 <h1>Dodaj nowy quiz</h1>
 
-<?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
+<?php if($error) echo "<p style='color:red;'>".htmlspecialchars($error, ENT_QUOTES, 'UTF-8')."</p>"; ?>
 
 <form method="post">
     <label>Nazwa quizu:</label><br>
@@ -50,7 +52,7 @@ $kat = $conn->query("SELECT * FROM kategoria");
     <label>Kategoria:</label><br>
     <select name="kategoria" required>
         <?php while($row = $kat->fetch_assoc()): ?>
-            <option value="<?=$row['id']?>"><?=htmlspecialchars($row['nazwa'])?></option>
+            <option value="<?= htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') ?>"><?=htmlspecialchars($row['nazwa'], ENT_QUOTES, 'UTF-8')?></option>
         <?php endwhile; ?>
     </select><br><br>
 

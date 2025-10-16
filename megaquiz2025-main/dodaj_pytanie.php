@@ -5,28 +5,42 @@ if(!isset($_SESSION['id'])) {
     exit(); 
 }
 
-$conn = new mysqli("localhost","root","","quizy");
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn->set_charset("utf8mb4");
 if($conn->connect_error) 
     die("Błąd połączenia: " . $conn->connect_error);
 
-$quiz_id = intval($_GET['id'] ?? 0);
+$quiz_id =intval($_GET['id'] ?? 0);
 $quiz = $conn->query("SELECT * FROM quizy WHERE id=$quiz_id")->fetch_assoc();
+
+if ($quiz['id_autor'] != $_SESSION['id']){
+    header("Location: index.php");
+    exit();
+}
 if(!$quiz) die("Nie znaleziono quizu");
 
 $count = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id")->fetch_assoc()['c'];
 $error = '';
 
 if(isset($_POST['finish'])){
-    // sprawdzamy, czy quiz ma przynajmniej jedno pytanie
     $count_check = $conn->query("SELECT COUNT(*) AS c FROM pytania WHERE quiz_id=$quiz_id")->fetch_assoc()['c'];
-    if($count_check == 0){
-        $error = "Nie możesz zakończyć tworzenia quizu bez żadnych pytań!";
-    } else {
-        $conn->query("UPDATE quizy SET ilosc_pytan = $count_check WHERE id=$quiz_id");
-        echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
-        echo "<script>setTimeout(()=>{ window.location='index.php'; }, 800);</script>";
-        exit();
+    $tresc = trim($_POST['tresc']);
+    $conn->query("INSERT INTO pytania (quiz_id, tresc, typ, kolejnosc) 
+                  VALUES ('$quiz_id', '".htmlspecialchars($tresc)."', 'abcd', ".($count+1).")");
+    $pytanie_id = $conn->insert_id;
+
+    for($i=1; $i<=4; $i++){
+        $odp = trim($_POST["odp$i"]);
+        if($odp !== ''){
+            $poprawna = (isset($_POST['poprawna']) && $_POST['poprawna']==$i) ? 1 : 0;
+            $conn->query("INSERT INTO odpowiedzi (pytanie_id, tresc, poprawna, kolejnosc) 
+                          VALUES ('$pytanie_id','".htmlspecialchars($odp)."','$poprawna','$i')");
+        }
     }
+    $conn->query("UPDATE quizy SET ilosc_pytan = ilosc_pytan + 1 WHERE id=$quiz_id");
+    echo "<p>Quiz utworzony! Wracamy na stronę główną...</p>";
+    echo "<script>setTimeout(()=>{ window.location='index.php'; }, 800);</script>";
+    exit();
 }
 
 if(isset($_POST['submit'])){
@@ -35,7 +49,7 @@ if(isset($_POST['submit'])){
 
     if(!$error){
         $conn->query("INSERT INTO pytania (quiz_id, tresc, typ, kolejnosc) 
-                      VALUES ('$quiz_id', '$tresc', 'abcd', ".($count+1).")");
+                      VALUES ('$quiz_id', '".htmlspecialchars($tresc)."', 'abcd', ".($count+1).")");
         $pytanie_id = $conn->insert_id;
 
         for($i=1; $i<=4; $i++){
@@ -43,7 +57,7 @@ if(isset($_POST['submit'])){
             if($odp !== ''){
                 $poprawna = (isset($_POST['poprawna']) && $_POST['poprawna']==$i) ? 1 : 0;
                 $conn->query("INSERT INTO odpowiedzi (pytanie_id, tresc, poprawna, kolejnosc) 
-                              VALUES ('$pytanie_id','$odp','$poprawna','$i')");
+                              VALUES ('$pytanie_id','".htmlspecialchars($odp)."','$poprawna','$i')");
             }
         }
 
@@ -61,12 +75,13 @@ if(isset($_POST['submit'])){
 <meta charset="UTF-8">
 <link rel="icon" type="image/x-icon" href="logoo.png">
 <title>Dodaj pytanie do quizu</title>
+<link rel="stylesheet" href="index.css">
 </head>
 <body>
-<h1>Quiz: <?=htmlspecialchars($quiz['nazwa'])?></h1>
-<p>Aktualna liczba pytań: <?=$count?></p>
+<h1>Quiz: <?=htmlspecialchars($quiz['nazwa'], ENT_QUOTES, 'UTF-8')?></h1>
+<p>Aktualna liczba pytań: <?= htmlspecialchars($count, ENT_QUOTES, 'UTF-8') ?></p>
 
-<?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
+<?php if($error) echo "<p style='color:red;'>".htmlspecialchars($error, ENT_QUOTES, 'UTF-8')."</p>"; ?>
 
 <form method="post">
     <label>Treść pytania:</label><br>

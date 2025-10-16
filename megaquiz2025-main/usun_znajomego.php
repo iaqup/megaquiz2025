@@ -9,11 +9,16 @@
     <h1>Usuń znajomego</h1>
     <?php
     session_start();
-    $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
+    if(!isset($_SESSION['id'])) { 
+    header("Location: logowanie.php"); 
+    exit(); 
+    }
+    $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+    $conn->set_charset("utf8mb4");
     $user_id = $_SESSION['id'];
     if (isset($_GET['id'])) {
-        $friend_id = $_GET['id'];
-        $conn->query("DELETE FROM `znajomi` WHERE (`id_nadawcy` = '$user_id' AND `id_odbiorcy` = '$friend_id') OR (`id_nadawcy` = '$friend_id' AND `id_odbiorcy` = '$user_id')");
+        $usuwany = intval($_GET['id']);
+        $conn->query("DELETE FROM `znajomi` WHERE (`id_nadawcy` = '$user_id' AND `id_odbiorcy` = '$usuwany') OR (`id_nadawcy` = '$usuwany' AND `id_odbiorcy` = '$user_id')");
     }
     $conn->close();
     header("Location: znajomi.php");

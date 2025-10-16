@@ -20,7 +20,12 @@
     </form>
     <?php
     session_start();
+    if(!isset($_SESSION['id'])) { 
+    header("Location: logowanie.php"); 
+    exit(); 
+    }
     $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+    $conn->set_charset("utf8mb4");
     $user_id = $_SESSION['id'];
     if (isset($_POST['submit_add']) && isset($_POST['add_friend'])) {
         $nazwa_znaj = $conn->real_escape_string($_POST['add_friend']);
@@ -62,8 +67,8 @@
                 $drugi = $row['id_nadawcy'];
             }
             echo '<tr>';
-            echo '<td>' . $row['nazwa'] . '</td>';
-            echo '<td><a href="usun_znajomego.php?id=' . $drugi . '" onclick="return confirm(\'Czy na pewno chcesz usunąć tego znajomego?\');"><button>Usuń</button></a></td>';
+            echo '<td>' . htmlspecialchars($row['nazwa'], ENT_QUOTES, 'UTF-8') . '</td>';
+            echo '<td><a href="usun_znajomego.php?id=' . urlencode($drugi) . '" onclick="return confirm(\'Czy na pewno chcesz usunąć tego znajomego?\');"><button>Usuń</button></a></td>';
             echo '</tr>';
         }
         }
@@ -81,13 +86,14 @@
         </tr>
         <?php
         $oczekujace = $conn->query("SELECT * FROM `znajomi`  JOIN `uzytkownicy`  ON znajomi.id_nadawcy = uzytkownicy.id WHERE znajomi.id_odbiorcy = '$user_id' AND znajomi.przyjeto = '0'");
+        $conn->close();
         if ($oczekujace->num_rows > 0){
         while ($row = $oczekujace->fetch_assoc()) {
             echo '<tr>';
-            echo '<td>' . $row['nazwa'] . '</td>';
+            echo '<td>' . htmlspecialchars($row['nazwa'], ENT_QUOTES, 'UTF-8') . '</td>';
             echo '<td>';
-            echo '<a href="akceptuj.php?id=' . $row['id'] . '"><button>Akceptuj</button></a> ';
-            echo '<a href="odrzuc.php?id=' . $row['id'] . '"><button>Odrzuć</button></a>';
+            echo '<a href="akceptuj.php?id=' . urlencode($row['id']) . '"><button>Akceptuj</button></a> ';
+            echo '<a href="odrzuc.php?id=' . urlencode($row['id']) . '"><button>Odrzuć</button></a>';
             echo '</td>';
             echo '</tr>';
         }

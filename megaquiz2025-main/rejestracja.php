@@ -1,5 +1,11 @@
 <?php 
-$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");    
+session_start();
+if(isset($_SESSION['id'])) { 
+    header("Location: index.php"); 
+    exit(); 
+}
+$conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
+$conn->set_charset("utf8mb4");
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -14,7 +20,7 @@ $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
     <a href="index.php">  <a href="index.php"><img src="logoo.png" alt="skibidi" width="60" height="50"></a></a>
   </div>
   <div class="right">
-    <a href="logowanie.php">Zaloguj się</a>
+    Masz już konto? <a href="logowanie.php">Zaloguj się</a>
   </div>
     </nav>
     <h1>Zarejestruj się</h1>
@@ -30,26 +36,26 @@ $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
     if (isset($_POST['submit'])){
         $email = $_POST['email'];
         $users = $_POST['user'];
-        $haslo = $_POST['haslo'];
+        $haslo = trim($_POST['haslo']);
         $haslo2 = $_POST['haslo2'];
 
         if (!empty($email) && !empty($users) && !empty($haslo) && !empty($haslo2)) {
             $check_user = $conn->query("SELECT id FROM `uzytkownicy` WHERE nazwa = '$users'");
             $check_email = $conn->query("SELECT id FROM `uzytkownicy` WHERE email = '$email'");
             if (!ctype_alnum($users)) {
-                echo '<div style="color:red;">Nazwa użytkownika nie spełnia wymagań, dozwolone są wyłącznie litery oraz cyfry.</div>';
+                echo '<div style="color:red;text-align: center;">Nazwa użytkownika nie spełnia wymagań, dozwolone są wyłącznie litery oraz cyfry.</div>';
             }
             else if (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!._@]{8,16}$/', $haslo)) {
-                echo '<div style="color:red;">Hasło nie spełnia wymagań; dozwolone są wyłącznie litery, cyfry oraz znaki specjalne !  .  _  @</div>';
+                echo '<div style="color:red;text-align: center;">Hasło nie spełnia wymagań; dozwolone są wyłącznie litery, cyfry oraz znaki specjalne !  .  _  @</br>Ponadto hasło wymaga jednej dużej litery oraz jednej cyfry</div>';
             }
             else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo '<div style="color:red;">Nieprawidłowy mail!</div>';
+                echo '<div style="color:red;text-align: center;">Nieprawidłowy mail!</div>';
             }
             else if ($check_user->num_rows > 0) {
-                echo '<div style="color:red;">Nazwa użytkownika jest zajęta!</div>';
+                echo '<div style="color:red;text-align: center;">Nazwa użytkownika jest zajęta!</div>';
             }
             else if ($check_email->num_rows > 0) {
-                echo '<div style="color:red;">Istnieje już konto powiązane z tym mailem!</div>';
+                echo '<div style="color:red;text-align: center;">Istnieje już konto powiązane z tym mailem!</div>';
             }
 
             else if($haslo == $haslo2){
@@ -75,7 +81,6 @@ $conn = new mysqli("localhost","megaquiz","Megahaslo2.","megaquiz");
         }
     }
     ?>
-    Masz już konto? <a href="logowanie.php">Zaloguj się</a>
 </body>
 </html>
 
